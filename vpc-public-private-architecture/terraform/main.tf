@@ -71,6 +71,13 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["10.0.0.0/16"] # only inside VPC
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -87,7 +94,7 @@ resource "aws_key_pair" "key" {
 
 # EC2 Instance (Public)
 resource "aws_instance" "public_ec2" {
-  ami           = "ami-0c02fb55956c7d316"
+  ami           = data.aws_ami.amazon_linux.id
   instance_type = "t2.micro"
 
   subnet_id = aws_subnet.public.id
@@ -99,6 +106,76 @@ resource "aws_instance" "public_ec2" {
     Name = "Public-EC2"
   }
 }
+
+resource "aws_subnet" "private_subnet" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "private-subnet"
+  }
+}
+
+resource "aws_eip" "nat_eip" {
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.public.id
+
+  depends_on = [aws_internet_gateway.igw]
+
+  tags = {
+    Name = "nat-gateway"
+  }
+}
+
+resource "aws_route_table" "private_rt" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+  }
+
+  tags = {
+    Name = "private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "private_assoc" {
+  subnet_id      = aws_subnet.private_subnet.id
+  route_table_id = aws_route_table.private_rt.id
+}
+
+
+resource "aws_instance" "private_ec2" {
+  ami           = data.aws_ami.amazon_linux.id
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.private_subnet.id
+
+  associate_public_ip_address = false
+
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+
+  tags = {
+    Name = "private-ec2"
+  }
+}
+
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+
+  owners = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
 
 
 
