@@ -1,0 +1,29 @@
+{
+  "family": "ecs-node-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::690692909437:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "ecs-node-container",
+      "image": "690692909437.dkr.ecr.us-east-1.amazonaws.com/ecs-node:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "wget -qO- http://localhost:3000/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 10
+      }
+    }
+  ]
+}
