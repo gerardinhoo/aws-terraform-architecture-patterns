@@ -104,7 +104,7 @@ resource "aws_lambda_function" "get_tasks" {
   filename      = data.archive_file.get_tasks_zip.output_path
   # source_code_hash = data.archive_file.get_tasks_zip.output_base64sha256
 
-  source_code_hash = filebase64sha256(data.archive_file.create_task_zip.output_path)
+  source_code_hash = filebase64sha256(data.archive_file.get_tasks_zip.output_path)
 
 
   environment {
@@ -122,7 +122,7 @@ resource "aws_lambda_function" "delete_task" {
   filename      = data.archive_file.delete_task_zip.output_path
   # source_code_hash = data.archive_file.delete_task_zip.output_base64sha256
 
-  source_code_hash = filebase64sha256(data.archive_file.create_task_zip.output_path)
+  source_code_hash = filebase64sha256(data.archive_file.delete_task_zip.output_path)
 
 
   environment {
