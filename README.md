@@ -33,6 +33,13 @@ Each folder represents a different architecture pattern commonly used in product
 - IAM policy testing and evaluation
 - Understanding permissions and access control
 
+### 🔹 lambda-task-api
+- Serverless REST API (Lambda + API Gateway + DynamoDB)
+- Node.js 18.x with AWS SDK v3
+- CRUD operations (create, list, delete tasks)
+- CI/CD with GitHub Actions (plan on PR, apply on merge)
+- Remote Terraform state in S3
+
 ---
 
 ## 🧠 What This Repo Demonstrates
@@ -41,6 +48,8 @@ Each folder represents a different architecture pattern commonly used in product
 - Cloud architecture design (AWS)
 - High availability and scalability patterns
 - Secure networking (public vs private subnets)
+- Serverless architecture (Lambda, API Gateway, DynamoDB)
+- CI/CD pipelines with GitHub Actions
 - IAM best practices
 - Debugging real-world cloud issues
 
@@ -48,8 +57,10 @@ Each folder represents a different architecture pattern commonly used in product
 
 ## 🛠️ Tech Stack
 
-- AWS (EC2, VPC, ALB, ASG, IAM, S3)
+- AWS (EC2, VPC, ALB, ASG, IAM, S3, Lambda, API Gateway, DynamoDB)
 - Terraform
+- Node.js 18.x
+- GitHub Actions
 - Amazon Linux 2
 - Bash / SSH
 
@@ -76,6 +87,7 @@ aws-terraform-architecture-patterns/
 ├── vpc-public-private-architecture/
 ├── ec2-iam-role-s3-access/
 ├── iam-policy-evaluation/
+├── lambda-task-api/
 └── README.md
 ```
 
@@ -86,6 +98,9 @@ aws-terraform-architecture-patterns/
 - Designing fault-tolerant systems using ALB + ASG
 - Building secure VPC architectures with public/private isolation
 - Managing access with IAM roles instead of credentials
+- Building serverless APIs with Lambda and API Gateway
+- Setting up CI/CD pipelines with Terraform and GitHub Actions
+- Managing remote Terraform state with S3
 - Structuring Terraform projects for real-world use
 - Troubleshooting networking, scaling, and AWS configuration issues
 
