@@ -3,6 +3,7 @@
 *.tfstate
 *.tfstate.*
 crash.log
+lambda-task-api/terraform/*.zip
 
 *.tfvars
 *.tfvars.json
