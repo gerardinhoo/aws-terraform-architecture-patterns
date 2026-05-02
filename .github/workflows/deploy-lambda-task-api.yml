@@ -6,11 +6,14 @@ on:
       - main
     paths:
       - 'lambda-task-api/**'
+      - '.github/workflows/deploy-lambda-task-api.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'lambda-task-api/**'
+      - '.github/workflows/deploy-lambda-task-api.yml'
+  workflow_dispatch:
 
 jobs:
   terraform-checks:
